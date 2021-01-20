@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 from time import time
 
-from helperfunctions import sigmoid, lambda_fun
+from vgpmil.helperfunctions import sigmoid, lambda_fun
 
 
 class vgpmil(object):
