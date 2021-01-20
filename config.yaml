@@ -1,0 +1,8 @@
+path_train_df: ./input/CT_feature_train.xls
+path_test_df: ./input/CT_feature_test.xls
+output_path: ./output/
+
+inducing_points: 200
+iterations: 200
+normalize: True
+verbose: True
