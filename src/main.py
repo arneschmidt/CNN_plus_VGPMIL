@@ -12,24 +12,29 @@ from metrics import calc_metrics
 
 
 def train(vgpmil_model: vgpmil, config: Dict):
+    print('Training..')
     train_df = pd.read_csv(config['path_train_df'])
     features, bag_labels_per_instance, bag_names_per_instance, Z, pi, mask, _ = convert_to_vgpmil_input(train_df)
     vgpmil_model.train(features, bag_labels_per_instance, bag_names_per_instance, Z, pi, mask)
 
 def test(vgpmil_model: vgpmil, config: Dict):
+    print('Testing..')
     test_df = pd.read_csv(config['path_test_df'])
-    features, _, _, _, _, _, instance_labels = convert_to_vgpmil_input(test_df)
+    features, bag_labels_per_instance, bag_names_per_instance, _, _, _, instance_labels = convert_to_vgpmil_input(test_df)
     predictions = vgpmil_model.predict(features)
     predictions = np.where(predictions >= 0.5, 1, 0).astype("float32")
-    metrics = calc_metrics(predictions, instance_labels, 'vgpmil')
+    metrics = calc_metrics(predictions, instance_labels, bag_labels_per_instance, bag_names_per_instance, 'vgpmil')
     out_name = os.path.basename(config['path_test_df']).split('.')[0]
 
     col_cnn_prediction = 'prediction (instance)'
     if col_cnn_prediction in test_df.columns:
         cnn_predictions = test_df[col_cnn_prediction].to_numpy().astype("float32")
-        cnn_metrics = calc_metrics(cnn_predictions, instance_labels, 'cnn')
+        cnn_metrics = calc_metrics(cnn_predictions, instance_labels, bag_labels_per_instance, bag_names_per_instance, 'cnn')
         metrics = pd.concat([metrics, cnn_metrics], axis=1)
-    metrics.to_csv(os.path.join(config['output_path'], 'metrics_' + out_name + '.csv'))
+
+    out_file = os.path.join(config['output_path'], 'metrics_' + out_name + '.csv')
+    print('Save output to ' + out_file)
+    metrics.to_csv(out_file)
 
 
 def main():
