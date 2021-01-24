@@ -6,3 +6,17 @@ inducing_points: 200
 iterations: 200
 normalize: True
 verbose: False
+
+# old column names
+col_feature_prefix: 'feature'
+col_bag_label: 'Scan_label (bag)'
+col_bag_name: 'Scan'
+col_instance_label: 'groundtruth (instance)'
+col_cnn_prediction: 'prediction (instance)'
+
+# new column names
+#col_feature_prefix: 'feature'
+#col_bag_label: 'groundtruth_Scan'
+#col_bag_name: 'Scan'
+#col_instance_label: 'groundtruth_instance'
+#col_cnn_prediction: 'predicted_instance'

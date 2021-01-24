@@ -1,12 +1,14 @@
+from typing import Dict
 import pandas as pd
 import numpy as np
 
 
-def convert_to_vgpmil_input(df: pd.DataFrame, train_with_instance_labels: bool=False):
-    col_feature_prefix = 'feature'
-    col_bag_label = 'Scan_label (bag)'
-    col_bag_name = 'Scan'
-    col_instance_label = 'groundtruth (instance)'
+def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_labels: bool=False):
+    # we try to automatically derive the column names
+    col_feature_prefix = config['col_feature_prefix']
+    col_bag_label = config['col_bag_label']
+    col_bag_name = config['col_bag_name']
+    col_instance_label = config['col_instance_label']
 
     # find all feature columns
     col_features = []
@@ -23,7 +25,7 @@ def convert_to_vgpmil_input(df: pd.DataFrame, train_with_instance_labels: bool=F
     Z = None
 
     if col_instance_label in df.columns:
-        instance_labels = (df['groundtruth (instance)'].to_numpy().astype("int"))  # instance_label column
+        instance_labels = (df[col_instance_label].to_numpy().astype("int"))  # instance_label column
         if train_with_instance_labels:
             pi = np.random.uniform(0, 0.1, size=len(df))  # -1 for untagged
             pi = np.where((0 == instance_labels), 0, pi)
