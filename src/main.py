@@ -29,7 +29,11 @@ def test(vgpmil_model: vgpmil, config: Dict):
     col_cnn_prediction = config['col_cnn_prediction']
     if col_cnn_prediction in test_df.columns:
         cnn_predictions = test_df[col_cnn_prediction].to_numpy().astype("float32")
-        cnn_metrics = calc_metrics(cnn_predictions, instance_labels, bag_labels_per_instance, bag_names_per_instance, 'cnn')
+        col_bag_cnn_predictions = config['col_bag_cnn_predictions']
+        bag_cnn_predictions = None
+        if col_bag_cnn_predictions in test_df.columns:
+            bag_cnn_predictions = (test_df[col_bag_cnn_predictions].to_numpy().astype("int"))
+        cnn_metrics = calc_metrics(cnn_predictions, instance_labels, bag_labels_per_instance, bag_names_per_instance, 'cnn', bag_cnn_predictions)
         metrics = pd.concat([metrics, cnn_metrics], axis=1)
 
     out_file = os.path.join(config['output_path'], 'metrics_' + out_name + '.csv')
