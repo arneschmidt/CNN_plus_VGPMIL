@@ -3,8 +3,8 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, f1_score, cohen_kappa_score, accuracy_score
 
 
-def calc_metrics(predictions: np.array, instance_labels: np.array, bag_labels_per_instance:np.array ,
-                 bag_names_per_instance: np.array, model_name: str):
+def calc_metrics(predictions: np.array, instance_labels: np.array, bag_labels_per_instance: np.array,
+                 bag_names_per_instance: np.array, model_name: str, bag_predictions: np.array = None):
 
     confusion_mat = confusion_matrix(instance_labels, predictions)
     metrics = pd.DataFrame(index=['recall', 'precision', 'accuracy', 'f1_score', 'cohens_kappa'], columns=[model_name])
@@ -18,7 +18,11 @@ def calc_metrics(predictions: np.array, instance_labels: np.array, bag_labels_pe
     metrics.loc['cohens_kappa', model_name] = round(cohen_kappa_score(instance_labels, predictions), 3)
 
     # calculate bag level metrics
-    bag_f1_score, bag_cohens_kappa, bag_accuracy = calc_bag_level_metrics(predictions, bag_labels_per_instance, bag_names_per_instance)
+    if bag_predictions is None: # if we don't have bag level predictions, derive them from instance predictions
+        bag_f1_score, bag_cohens_kappa, bag_accuracy = calc_bag_level_metrics(predictions, bag_labels_per_instance, bag_names_per_instance)
+    else: # if we have bag level predictions, we can still use the same function
+        bag_f1_score, bag_cohens_kappa, bag_accuracy = calc_bag_level_metrics(bag_predictions, bag_labels_per_instance, bag_names_per_instance)
+
     metrics.loc['bag_accuracy', model_name] = round(bag_accuracy, 3)
     metrics.loc['bag_f1_score', model_name] = round(bag_f1_score, 3)
     metrics.loc['bag_cohens_kappa', model_name] = round(bag_cohens_kappa, 3)

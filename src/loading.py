@@ -23,6 +23,7 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
     pi = None
     mask = None
     Z = None
+    bag_cnn_predictions = None
 
     if col_instance_label in df.columns:
         instance_labels = (df[col_instance_label].to_numpy().astype("int"))  # instance_label column
@@ -32,5 +33,6 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
             pi = np.where((0 < instance_labels), 1, pi)
 
             mask = np.where(instance_labels > -1, False, True)
+
     return features, bag_labels_per_instance, bag_names_per_instance, Z, pi, mask, instance_labels
 

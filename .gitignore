@@ -1,7 +1,8 @@
 ## custom gitignore
 input
 output
-
+src/__**
+**__pycache__**
 ## below this line is gitignore stuff from pycharm
 
 # User-specific stuff
