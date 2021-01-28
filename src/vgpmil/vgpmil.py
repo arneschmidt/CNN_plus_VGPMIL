@@ -131,8 +131,8 @@ class vgpmil(object):
             Emax = np.clip(Emax, 0, 1)
 
             mask = self.mask
-            self.pi[mask] = sigmoid(Ef[mask] + self.lH * (2 * self.InstBagLabel + Emax[mask] -
-                                                          2 * self.InstBagLabel[mask] * Emax - 1))
+            self.pi[mask] = sigmoid(Ef[mask] + self.lH * (2 * self.InstBagLabel[mask] + Emax[mask] -
+                                                          2 * self.InstBagLabel[mask] * Emax[mask] - 1))
 
             # Update Jaakkola
             self.xi = np.sqrt(Eff)
