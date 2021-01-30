@@ -23,7 +23,6 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
     pi = None
     mask = None
     Z = None
-    bag_cnn_predictions = None
 
     if col_instance_label in df.columns:
         instance_labels = (df[col_instance_label].to_numpy().astype("int"))  # instance_label column
