@@ -42,6 +42,7 @@ def test(vgpmil_model: vgpmil, config: Dict):
 
     out_name = os.path.basename(config['path_test_df']).split('.')[0]
     out_file = os.path.join(config['output_path'], 'metrics_' + out_name + '.csv')
+    os.makedirs(config['output_path'], exist_ok=True)
 
     print('Save output to ' + out_file)
     metrics.to_csv(out_file)
