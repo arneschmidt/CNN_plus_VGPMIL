@@ -9,6 +9,7 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
     col_bag_label = config['col_bag_label']
     col_bag_name = config['col_bag_name']
     col_instance_label = config['col_instance_label']
+    col_bag_cnn_predictions = config['col_bag_cnn_predictions']
 
     # find all feature columns
     col_features = []
@@ -17,13 +18,14 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
             col_features.append(col)
     bag_labels_per_instance = df[col_bag_label].to_numpy().astype('int')
     bag_names_per_instance = df[col_bag_name].to_numpy().astype('str')
+    bag_cnn_predictions = df[col_bag_cnn_predictions].to_numpy().astype('str')
 
     features = df[col_features].to_numpy().astype('float32')
     instance_labels = None
     pi = None
     mask = None
     Z = None
-    bag_cnn_predictions = None
+   # bag_cnn_predictions = None
 
     if col_instance_label in df.columns:
         instance_labels = (df[col_instance_label].to_numpy().astype("int"))  # instance_label column
@@ -34,5 +36,5 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
 
             mask = np.where(instance_labels > -1, False, True)
 
-    return features, bag_labels_per_instance, bag_names_per_instance, Z, pi, mask, instance_labels
+    return features, bag_labels_per_instance, bag_names_per_instance, Z, pi, mask, instance_labels, bag_cnn_predictions
 
