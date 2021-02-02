@@ -8,7 +8,7 @@ def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array
 
     # To calculate the instance metrics we need gt and predictions of the same size.
     # If the instance labels are not available in the table, an empty array is passed
-    if instance_labels.size == predictions.size:
+    if instance_labels.size == predictions.size != 0:
         print('Calculate instance metrics of ' + model_name)
 
         confusion_mat = confusion_matrix(instance_labels, predictions)
@@ -35,7 +35,7 @@ def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_pe
 
     # To calculate the bag metrics we need gt and predictions of the same size.
     # If the bag predictions or labels are not available in the table, an empty array is passed
-    if bag_predictions_per_instance.size == bag_labels_per_instance.size:
+    if bag_predictions_per_instance.size == bag_labels_per_instance.size != 0:
         print('Calculate bag metrics of ' + model_name)
 
         bag_predictions = []

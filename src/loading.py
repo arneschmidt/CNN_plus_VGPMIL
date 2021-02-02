@@ -42,7 +42,7 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
 
 
 def load_cnn_predictions(test_df, config):
-    col_cnn_prediction = config['cnn_prediction']
+    col_cnn_prediction = config['col_cnn_prediction']
     col_bag_cnn_prediction = config['col_bag_cnn_prediction']
 
     if col_cnn_prediction in test_df.columns:
@@ -50,7 +50,7 @@ def load_cnn_predictions(test_df, config):
     else:
         cnn_prediction = np.array([])
     if col_bag_cnn_prediction in test_df.columns:
-        bag_cnn_prediction = test_df[col_cnn_prediction].to_numpy().astype("float32")
+        bag_cnn_prediction = test_df[col_bag_cnn_prediction].to_numpy().astype("float32")
     else:
         bag_cnn_prediction = np.array([])
 

@@ -1,33 +1,16 @@
 path_train_df: ./input/without_attention/CT_feature_train.xls
-path_test_df: ./input/CQ500/CQ500_8.csv
-output_path: ./output/CQ500/
+path_test_df: ./input/without_attention/CT_feature_test.xls
+output_path: ./output/without_attention
 
 inducing_points: 200
 iterations: 200
 normalize: True
 verbose: False
 
-# names for 'with attention'
-#col_feature_prefix: 'feature'
-#col_bag_label: 'Scan_label (bag)'
-#col_bag_name: 'Scan'
-#col_bag_cnn_predictions: 'None'
-#col_instance_label: 'groundtruth' #'groundtruth (instance)'
-#col_cnn_prediction: 'prediction (instance)'
-
-# names for 'without attention'
-#col_feature_prefix: 'feature'
-#col_bag_label: 'groundtruth_Scan'
-#col_bag_name: 'Scan'
-#col_bag_cnn_predictions: 'Scan_predict_int'
-#col_instance_label: 'groundtruth_instance'
-#col_cnn_prediction: 'predicted_instance'
-
-
-# cq 500 names
+# input column naming convention
 col_feature_prefix: 'feature'
-col_bag_label: 'bag_label'
-col_bag_name: 'bag_name'
-col_bag_cnn_predictions: 'bag_cnn_prediction'
 col_instance_label: 'instance_label'
 col_cnn_prediction: 'cnn_prediction'
+col_bag_label: 'bag_label'
+col_bag_name: 'bag_name'
+col_bag_cnn_prediction: 'bag_cnn_prediction'
