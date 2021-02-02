@@ -1,0 +1,35 @@
+path_train_df: ../input/without_attention/train_128.csv
+path_test_df: ../input/CQ500/CQ500_128_ATT.csv
+output_path: ../output/CQ500/
+
+inducing_points: 200
+iterations: 200
+normalize: True
+verbose: False
+
+# old column names
+# names for 'with attention'
+#col_feature_prefix: 'feature'
+#col_bag_label: 'Scan_label (bag)'
+#col_bag_name: 'Scan'
+#col_bag_cnn_predictions: 'None'
+#col_instance_label: 'groundtruth' #'groundtruth (instance)'
+#col_cnn_prediction: 'prediction (instance)'
+
+# new column names
+# names for 'without attention'
+#col_feature_prefix: 'feature'
+#col_bag_label: 'groundtruth_Scan'
+#col_bag_name: 'Scan'
+#col_bag_cnn_predictions: 'Scan_predict_int'
+#col_instance_label: 'groundtruth_instance'
+#col_cnn_prediction: 'predicted_instance'
+
+
+# cq 500 names
+col_feature_prefix: 'feature'
+col_bag_label: 'bag_label'
+col_bag_name: 'bag_name'
+col_bag_cnn_predictions: 'bag_cnn_prediction'
+col_instance_label: 'instance_label'
+col_cnn_prediction: 'cnn_prediction'
