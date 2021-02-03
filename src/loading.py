@@ -15,15 +15,17 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
     for col in df.columns:
         if col_feature_prefix in col:
             col_features.append(col)
-    bag_labels_per_instance = df[col_bag_label].to_numpy().astype('int')
     bag_names_per_instance = df[col_bag_name].to_numpy().astype('str')
 
     features = df[col_features].to_numpy().astype('float32')
-    instance_labels = None
+
     pi = None
     mask = None
     Z = None
-    bag_cnn_predictions = None
+    if col_bag_label in df.columns:
+        bag_labels_per_instance = df[col_bag_label].to_numpy().astype('int')
+    else:
+        bag_labels_per_instance = np.array([])
 
     if col_instance_label in df.columns:
         instance_labels = (df[col_instance_label].to_numpy().astype("int"))  # instance_label column
@@ -33,6 +35,24 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
             pi = np.where((0 < instance_labels), 1, pi)
 
             mask = np.where(instance_labels > -1, False, True)
+    else:
+        instance_labels = np.array([])
 
     return features, bag_labels_per_instance, bag_names_per_instance, Z, pi, mask, instance_labels
+
+
+def load_cnn_predictions(test_df, config):
+    col_cnn_prediction = config['col_cnn_prediction']
+    col_bag_cnn_prediction = config['col_bag_cnn_prediction']
+
+    if col_cnn_prediction in test_df.columns:
+        cnn_prediction = test_df[col_cnn_prediction].to_numpy().astype("float32")
+    else:
+        cnn_prediction = np.array([])
+    if col_bag_cnn_prediction in test_df.columns:
+        bag_cnn_prediction = test_df[col_bag_cnn_prediction].to_numpy().astype("float32")
+    else:
+        bag_cnn_prediction = np.array([])
+
+    return cnn_prediction, bag_cnn_prediction
 
