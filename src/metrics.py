@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.metrics import confusion_matrix, f1_score, cohen_kappa_score, accuracy_score
+from sklearn.metrics import confusion_matrix, f1_score, cohen_kappa_score, accuracy_score, recall_score, precision_score
 
 
 def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array, model_name: str):
@@ -11,13 +11,12 @@ def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array
     if instance_labels.size == predictions.size != 0:
         print('Calculate instance metrics of ' + model_name)
 
-        confusion_mat = confusion_matrix(instance_labels, predictions)
+        #confusion matrix
+        #confusion_mat = confusion_matrix(instance_labels, predictions)
 
-        metrics.loc['recall', model_name] = round(confusion_mat[0][0] / (confusion_mat[0][0] + confusion_mat[1][0]), 3)
-        metrics.loc['precision', model_name] = round(confusion_mat[0][0] / (confusion_mat[0][0] + confusion_mat[0][1]), 3)
-        metrics.loc['accuracy', model_name] = round((confusion_mat[0][0] + confusion_mat[1][1]) / (
-                    confusion_mat[0][0] + confusion_mat[1][0] + confusion_mat[0][1] +
-                    confusion_mat[1][1]), 3)
+        metrics.loc['recall', model_name] = round(recall_score(instance_labels, predictions), 3)
+        metrics.loc['precision', model_name] = round(precision_score(instance_labels, predictions), 3)
+        metrics.loc['accuracy', model_name] = round(accuracy_score(instance_labels, predictions), 3)
         metrics.loc['f1_score', model_name] = round(f1_score(instance_labels, predictions), 3)
         metrics.loc['cohens_kappa', model_name] = round(cohen_kappa_score(instance_labels, predictions), 3)
     else:
@@ -53,11 +52,15 @@ def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_pe
 
         bag_predictions = np.array(bag_predictions)
         bag_gt = np.array(bag_gt)
-
+        
+        bag_recall = recall_score(bag_gt, bag_predictions)
+        bag_precision = precision_score(bag_gt, bag_predictions)
         bag_accuracy = accuracy_score(bag_gt, bag_predictions)
         bag_f1_score = f1_score(bag_gt, bag_predictions)
         bag_cohens_kappa = cohen_kappa_score(bag_gt, bag_predictions)
-
+        
+        metrics.loc['bag_recall', model_name] = round(bag_recall, 3)
+        metrics.loc['bag_precision', model_name] = round(bag_precision, 3)
         metrics.loc['bag_accuracy', model_name] = round(bag_accuracy, 3)
         metrics.loc['bag_f1_score', model_name] = round(bag_f1_score, 3)
         metrics.loc['bag_cohens_kappa', model_name] = round(bag_cohens_kappa, 3)
