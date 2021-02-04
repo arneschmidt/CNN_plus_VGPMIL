@@ -25,16 +25,16 @@ def test(vgpmil_model: vgpmil, config: Dict):
     features, bag_labels_per_instance, bag_names_per_instance, _, _, _, instance_labels = convert_to_vgpmil_input(test_df, config)
 
     # calculate the metrics for vgpmil
-    predictions = vgpmil_model.predict(features)
-    predictions = np.where(predictions >= 0.5, 1, 0).astype("float32")
+    vgpmil_probabilities = vgpmil_model.predict(features)
+    predictions = np.where(vgpmil_probabilities >= 0.5, 1, 0).astype("float32")
     vgpmil_instance_metrics = calc_instance_level_metrics(predictions, instance_labels, 'vgpmil')
     vgpmil_bag_metrics = calc_bag_level_metrics(predictions, bag_labels_per_instance, bag_names_per_instance, 'vgpmil')
     vgpmil_metrics = pd.concat([vgpmil_instance_metrics, vgpmil_bag_metrics], axis=0)
 
     # calculate the metrics for the CNN
-    cnn_predictions, bag_cnn_predictions = load_cnn_predictions(test_df, config)
+    cnn_predictions, bag_cnn_predictions, bag_cnn_probabilities = load_cnn_predictions(test_df, config)
     cnn_instance_metrics = calc_instance_level_metrics(cnn_predictions, instance_labels, 'cnn')
-    cnn_bag_metrics = calc_bag_level_metrics(bag_cnn_predictions, bag_labels_per_instance, bag_names_per_instance, 'cnn')
+    cnn_bag_metrics = calc_bag_level_metrics(bag_cnn_predictions, bag_labels_per_instance, bag_names_per_instance, bag_cnn_probabilities, 'cnn')
 
     cnn_metrics = pd.concat([cnn_instance_metrics, cnn_bag_metrics], axis=0)
 
