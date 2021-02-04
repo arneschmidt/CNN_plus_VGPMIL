@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-from sklearn.metrics import confusion_matrix, f1_score, cohen_kappa_score, accuracy_score, recall_score, precision_score
-
+from sklearn.metrics import f1_score, cohen_kappa_score, accuracy_score, recall_score, precision_score, roc_auc_score
+from scipy import stats
 
 def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array, model_name: str):
     metrics = pd.DataFrame(index=['recall', 'precision', 'accuracy', 'f1_score', 'cohens_kappa'], columns=[model_name])
@@ -19,6 +19,8 @@ def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array
         metrics.loc['accuracy', model_name] = round(accuracy_score(instance_labels, predictions), 3)
         metrics.loc['f1_score', model_name] = round(f1_score(instance_labels, predictions), 3)
         metrics.loc['cohens_kappa', model_name] = round(cohen_kappa_score(instance_labels, predictions), 3)
+        metrics.loc['ttest', model_name] = round(stats.ttest(instance_labels, predictions), 3)
+                    
     else:
         print('The instance metrics of ' + model_name + ' have not been calculated.')
 
@@ -26,7 +28,7 @@ def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array
 
 
 def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_per_instance: np.array,
-                           bag_names_per_instance: np.array, model_name: str):
+                           bag_names_per_instance: np.array, bag_cnn_probabilities_per_instance: np.array, model_name: str):
 
     metrics = pd.DataFrame(index=['bag_accuracy', 'bag_f1_score', 'bag_cohens_kappa'], columns=[model_name])
 
@@ -64,6 +66,10 @@ def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_pe
         metrics.loc['bag_accuracy', model_name] = round(bag_accuracy, 3)
         metrics.loc['bag_f1_score', model_name] = round(bag_f1_score, 3)
         metrics.loc['bag_cohens_kappa', model_name] = round(bag_cohens_kappa, 3)
+        
+        if bag_cnn_probabilities_per_instance is not None:
+            metrics.loc['roc_auc', model_name] = round(roc_auc_score(bag_gt, predictions), 3)
+            
     else:
         print('The bag metrics of ' + model_name + ' have not been calculated.')
 
