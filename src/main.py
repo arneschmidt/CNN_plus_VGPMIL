@@ -28,7 +28,7 @@ def test(vgpmil_model: vgpmil, config: Dict):
     vgpmil_probabilities = vgpmil_model.predict(features)
     predictions = np.where(vgpmil_probabilities >= 0.5, 1, 0).astype("float32")
     vgpmil_instance_metrics = calc_instance_level_metrics(predictions, instance_labels, 'vgpmil')
-    vgpmil_bag_metrics = calc_bag_level_metrics(predictions, bag_labels_per_instance, bag_names_per_instance, 'vgpmil')
+    vgpmil_bag_metrics = calc_bag_level_metrics(predictions, bag_labels_per_instance, bag_names_per_instance, vgpmil_probabilities, 'vgpmil')
     vgpmil_metrics = pd.concat([vgpmil_instance_metrics, vgpmil_bag_metrics], axis=0)
 
     # calculate the metrics for the CNN
