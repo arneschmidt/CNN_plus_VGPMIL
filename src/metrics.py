@@ -13,13 +13,18 @@ def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array
 
         #confusion matrix
         #confusion_mat = confusion_matrix(instance_labels, predictions)
+        
+        predictions = np.array(predictions)
 
         metrics.loc['recall', model_name] = round(recall_score(instance_labels, predictions), 3)
         metrics.loc['precision', model_name] = round(precision_score(instance_labels, predictions), 3)
         metrics.loc['accuracy', model_name] = round(accuracy_score(instance_labels, predictions), 3)
         metrics.loc['f1_score', model_name] = round(f1_score(instance_labels, predictions), 3)
         metrics.loc['cohens_kappa', model_name] = round(cohen_kappa_score(instance_labels, predictions), 3)
-        metrics.loc['ttest', model_name] = round(stats.ttest(instance_labels, predictions), 3)
+        statistics, pvalue = stats.ttest_ind(instance_labels, predictions)
+        metrics.loc['ttest_ind', model_name] = round(pvalue, 3)
+        statistics_rel, pvalue_rel = stats.ttest_rel(instance_labels, predictions)
+        metrics.loc['ttest_rel', model_name] = round(pvalue_rel, 3)
                     
     else:
         print('The instance metrics of ' + model_name + ' have not been calculated.')
@@ -28,7 +33,7 @@ def calc_instance_level_metrics(predictions: np.array, instance_labels: np.array
 
 
 def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_per_instance: np.array,
-                           bag_names_per_instance: np.array, bag_cnn_probabilities_per_instance: np.array, model_name: str):
+                           bag_names_per_instance: np.array, bag_probabilities_per_instance: np.array, model_name: str):
 
     metrics = pd.DataFrame(index=['bag_accuracy', 'bag_f1_score', 'bag_cohens_kappa'], columns=[model_name])
 
@@ -41,6 +46,7 @@ def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_pe
 
         bag_predictions = []
         bag_gt = []
+        bag_probabilities = []
         for bag_name in bag_names:
             bag_indices = (bag_names_per_instance == bag_name)
             bag_instance_predictions = bag_predictions_per_instance[bag_indices]
@@ -48,12 +54,17 @@ def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_pe
 
             bag_gt_label = np.unique(bag_labels_per_instance[bag_indices])
             assert len(bag_gt_label) == 1 # make sure all bag labels are the same for one bag
+            
+            bag_probability = np.max(bag_probabilities_per_instance[bag_indices])
+            assert bag_probability.size == 1 # make sure all bag probabilities are the same for one bag
 
             bag_predictions.append(bag_predicted_label)
             bag_gt.append(bag_gt_label)
+            bag_probabilities.append(bag_probability)
 
         bag_predictions = np.array(bag_predictions)
         bag_gt = np.array(bag_gt)
+        bag_probabilities = np.array(bag_probabilities)
         
         bag_recall = recall_score(bag_gt, bag_predictions)
         bag_precision = precision_score(bag_gt, bag_predictions)
@@ -66,9 +77,7 @@ def calc_bag_level_metrics(bag_predictions_per_instance: np.array, bag_labels_pe
         metrics.loc['bag_accuracy', model_name] = round(bag_accuracy, 3)
         metrics.loc['bag_f1_score', model_name] = round(bag_f1_score, 3)
         metrics.loc['bag_cohens_kappa', model_name] = round(bag_cohens_kappa, 3)
-        
-        if bag_cnn_probabilities_per_instance is not None:
-            metrics.loc['roc_auc', model_name] = round(roc_auc_score(bag_gt, predictions), 3)
+        metrics.loc['roc_auc', model_name] = round(roc_auc_score(bag_gt, bag_probabilities), 3)
             
     else:
         print('The bag metrics of ' + model_name + ' have not been calculated.')
