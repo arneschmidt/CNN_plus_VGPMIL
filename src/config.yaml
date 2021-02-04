@@ -1,0 +1,17 @@
+path_train_df: ../input/without_attention/train_32.csv
+path_test_df: ../input/CQ500/CQ500_32_ATT.csv
+output_path: ../output/CQ500/with_attention
+
+inducing_points: 200
+iterations: 200
+normalize: True
+verbose: False
+
+# input column naming convention
+col_feature_prefix: 'feature'
+col_instance_label: 'instance_label'
+col_cnn_prediction: 'cnn_prediction'
+col_bag_label: 'bag_label'
+col_bag_name: 'bag_name'
+col_bag_cnn_prediction: 'bag_cnn_prediction'
+col_bag_cnn_probability: 'bag_cnn_probability'
