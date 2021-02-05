@@ -1,11 +1,19 @@
 path_train_df: ./RSNA/input/with_attention_factor/train_8.csv
-path_test_df: ./RSNA/input/with_attention_factor/test_8.csv
+path_test_df: ./CQ500/input/with_attention_factor/CQ500_8_ATT.csv
 output_path: ./
 
-inducing_points: 200
-iterations: 200
-normalize: True
-verbose: False
+use_models:
+  vgpmil: True
+  random_forest: True
+  svm: True
+  cnn: True
+
+
+vgpmil:
+  inducing_points: 200
+  iterations: 200
+  normalize: True
+  verbose: False
 
 # input column naming convention
 col_feature_prefix: 'feature'

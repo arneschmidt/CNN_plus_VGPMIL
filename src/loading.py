@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 
 
-def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_labels: bool=False):
+def load_dataframe(df: pd.DataFrame, config: Dict):
+    train_with_instance_labels = False # only use if some day we want to train with instance labels
     # we try to automatically derive the column names
     col_feature_prefix = config['col_feature_prefix']
     col_bag_label = config['col_bag_label']
@@ -38,7 +39,7 @@ def convert_to_vgpmil_input(df: pd.DataFrame, config: Dict, train_with_instance_
     else:
         instance_labels = np.array([])
 
-    return features, bag_labels_per_instance, bag_names_per_instance, Z, pi, mask, instance_labels
+    return features, bag_labels_per_instance, bag_names_per_instance, instance_labels
 
 
 def load_cnn_predictions(test_df, config):
@@ -55,4 +56,34 @@ def load_cnn_predictions(test_df, config):
         bag_cnn_prediction = np.array([])
 
     return cnn_prediction, bag_cnn_prediction
+
+def get_bag_level_information(features: np.array, bag_labels_per_instance: np.array, bag_names_per_instance: np.array,
+                              pooling: str = 'avg'):
+    """
+    pooling: 'avg' or 'max'
+    """
+    bag_names = np.unique(bag_names_per_instance)
+    bag_features = []
+    bag_labels = []
+
+    for bag_name in bag_names:
+        bag_indices = (bag_names_per_instance == bag_name)
+        inst_features_of_bag = features[bag_indices]
+
+        if pooling == 'avg':
+            bag_features_of_bag = np.mean(inst_features_of_bag, axis=1)
+        else:
+            vector_norm = np.linalg.norm(inst_features_of_bag, axis=1)
+            argmax = np.argmax(vector_norm)
+            bag_features_of_bag = inst_features_of_bag[argmax]
+        bag_features.append(bag_features_of_bag)
+
+        bag_gt_label = np.unique(bag_labels_per_instance[bag_indices])
+        assert len(bag_gt_label) == 1  # make sure all bag labels are the same for one bag
+        bag_labels.append(bag_gt_label)
+
+    bag_features = np.array(bag_features)
+    bag_labels = np.array(bag_labels)
+
+    return bag_features, bag_labels, bag_names
 
