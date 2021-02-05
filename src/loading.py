@@ -45,6 +45,7 @@ def load_dataframe(df: pd.DataFrame, config: Dict):
 def load_cnn_predictions(test_df, config):
     col_cnn_prediction = config['col_cnn_prediction']
     col_bag_cnn_prediction = config['col_bag_cnn_prediction']
+    col_bag_cnn_probability = config['col_bag_cnn_probability']
 
     if col_cnn_prediction in test_df.columns:
         cnn_prediction = test_df[col_cnn_prediction].to_numpy().astype("float32")
@@ -54,8 +55,13 @@ def load_cnn_predictions(test_df, config):
         bag_cnn_prediction = test_df[col_bag_cnn_prediction].to_numpy().astype("float32")
     else:
         bag_cnn_prediction = np.array([])
+    if col_bag_cnn_probability in test_df.columns:
+        bag_cnn_probability = test_df[col_bag_cnn_probability].to_numpy().astype("float32")
+    else:
+        bag_cnn_probability = np.array([])
 
-    return cnn_prediction, bag_cnn_prediction
+
+    return cnn_prediction, bag_cnn_prediction, bag_cnn_probability
 
 def get_bag_level_information(features: np.array, bag_labels_per_instance: np.array, bag_names_per_instance: np.array,
                               pooling: str = 'avg'):

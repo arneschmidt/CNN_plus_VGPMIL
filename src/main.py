@@ -60,7 +60,6 @@ def test(config: Dict, vgpmil_model: vgpmil = None, rf_model: RandomForestClassi
     if vgpmil_model is not None:
         print('Test VGPMIL')
         predictions = vgpmil_model.predict(features)
-        predictions = np.where(predictions >= 0.5, 1, 0).astype("float32")
         metrics_calculator.calc_metrics(predictions, predictions, 'vgpmil')
     if rf_model is not None:
         print('Test Random Forest')
@@ -71,8 +70,8 @@ def test(config: Dict, vgpmil_model: vgpmil = None, rf_model: RandomForestClassi
         bag_predictions = svm_model.predict(bag_features)
         metrics_calculator.calc_metrics(np.array([]), bag_predictions, 'svm')
     if config['use_models']['cnn'] == True:
-        cnn_predictions, bag_cnn_predictions = load_cnn_predictions(test_df, config)
-        metrics_calculator.calc_metrics(cnn_predictions, bag_cnn_predictions, 'cnn')
+        cnn_predictions, bag_cnn_predictions, bag_cnn_probability = load_cnn_predictions(test_df, config)
+        metrics_calculator.calc_metrics(cnn_predictions, bag_cnn_probability, 'cnn')
 
     metrics_calculator.write_to_file(config)
 
