@@ -1,6 +1,6 @@
 path_train_df: ./RSNA/input/with_attention_factor/train_8.csv
-path_test_df: ./CQ500/input/with_attention_factor/CQ500_8_ATT.csv
-output_path: ./
+path_test_df: ./RSNA/input/with_attention_factor/test_8.csv
+output_path: ./RSNA/output/with_attention_factor
 
 use_models:
   vgpmil: True

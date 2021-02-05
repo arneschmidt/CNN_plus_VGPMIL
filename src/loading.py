@@ -71,9 +71,9 @@ def get_bag_level_information(features: np.array, bag_labels_per_instance: np.ar
         inst_features_of_bag = features[bag_indices]
 
         if pooling == 'avg':
-            bag_features_of_bag = np.mean(inst_features_of_bag, axis=1)
+            bag_features_of_bag = np.mean(inst_features_of_bag, axis=0)
         else:
-            vector_norm = np.linalg.norm(inst_features_of_bag, axis=1)
+            vector_norm = np.linalg.norm(inst_features_of_bag, axis=0)
             argmax = np.argmax(vector_norm)
             bag_features_of_bag = inst_features_of_bag[argmax]
         bag_features.append(bag_features_of_bag)
