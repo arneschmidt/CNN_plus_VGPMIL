@@ -1,11 +1,19 @@
-path_train_df: ./input/without_attention/CT_feature_train.xls
-path_test_df: ./input/without_attention/CT_feature_test.xls
-output_path: ./output/without_attention
+path_train_df: ./RSNA/input/with_attention_factor/train_8.csv
+path_test_df: ./RSNA/input/with_attention_factor/test_8.csv
+output_path: ./RSNA/output/with_attention_factor/
 
-inducing_points: 200
-iterations: 200
-normalize: True
-verbose: False
+use_models:
+  vgpmil: True
+  random_forest: True
+  svm: True
+  cnn: True
+
+
+vgpmil:
+  inducing_points: 200
+  iterations: 200
+  normalize: True
+  verbose: False
 
 # input column naming convention
 col_feature_prefix: 'feature'
@@ -14,3 +22,4 @@ col_cnn_prediction: 'cnn_prediction'
 col_bag_label: 'bag_label'
 col_bag_name: 'bag_name'
 col_bag_cnn_prediction: 'bag_cnn_prediction'
+col_bag_cnn_probability: 'bag_cnn_probability'
