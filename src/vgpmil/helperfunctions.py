@@ -34,4 +34,3 @@ class RBF(object):
 
     def compute_diag(self, X1):
         return np.identity(X1.shape[0]) * self.var
-

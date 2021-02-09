@@ -141,7 +141,7 @@ class vgpmil(object):
             if self.verbose:
                 print("Minutes needed: ", (stop - start) / 60.)
 
-    def predict(self, Xtest):
+    def predict(self, Xtest, bag_names_per_instance, bag_names):
         """
         Predict instances
         :param Xtest: mxd matrix of n instances with d features
@@ -153,7 +153,19 @@ class vgpmil(object):
         Kzx = self.kernel.compute(self.Z, Xtest)
         KzziKzx = np.dot(self.Kzzinv, Kzx)
 
-        return sigmoid(np.dot(KzziKzx.T, self.m))
+        instance_ber_probabilities = sigmoid(np.dot(KzziKzx.T, self.m))
+        instance_zero_prob = np.ones_like(instance_ber_probabilities) - instance_ber_probabilities
+
+        bag_probabilities = np.full(shape = len(bag_names), fill_value=-1.0, dtype=np.float)
+        for j in range(len(bag_names)):
+            bag_name = bag_names[j]
+            bag_instances_zero_prob = instance_zero_prob[bag_names_per_instance == bag_name]
+            bag_zero_prob = np.prod(bag_instances_zero_prob)
+            bag_probabilities[j] = 1 - bag_zero_prob
+
+        assert np.all(bag_probabilities != -1)
+
+        return instance_ber_probabilities, bag_probabilities
 
 
 
