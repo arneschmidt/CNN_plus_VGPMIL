@@ -14,9 +14,9 @@ def visualize_and_save(features, instance_labels, config):
     features_embedded_id_1 = features_embedded[id_1]
 
     plt.scatter(features_embedded_id_0[:,0], features_embedded_id_0[:,1], c="g", alpha=0.5, marker='o',
-                label="class 0")
+                label="normal")
     plt.scatter(features_embedded_id_1[:,0], features_embedded_id_1[:,1], c="r", alpha=0.5, marker='+',
-                label="class 1")
+                label="ITC")
     plt.legend(loc='upper left')
     # plt.show()
     print('Save TSNE plot to: ')
