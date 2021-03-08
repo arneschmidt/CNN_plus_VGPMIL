@@ -8,10 +8,9 @@ use_models:
   svm: True
   cnn: True
 
-
 vgpmil:
   inducing_points: 200
-  iterations: 100
+  iterations: 2
   normalize: True
   verbose: False
   kernel_length_scale: 1.5
@@ -25,3 +24,7 @@ col_bag_label: 'bag_label'
 col_bag_name: 'bag_name'
 col_bag_cnn_prediction: 'bag_cnn_prediction'
 col_bag_cnn_probability: 'bag_cnn_probability'
+
+tsne:
+  visualize: False
+  random_seed: 42

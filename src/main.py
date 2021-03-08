@@ -11,6 +11,7 @@ from sklearn.svm import SVC
 
 from loading import load_dataframe, load_cnn_predictions, get_bag_level_information
 from metrics import Metrics
+from tsne_visualization import visualize_and_save
 
 def initialize_models(config):
     vgpmil_model = None
@@ -36,8 +37,12 @@ def train(config: Dict, vgpmil_model: vgpmil = None, rf_model: RandomForestClass
     print('Training..')
     train_df = pd.read_csv(config['path_train_df'])
     print('Loaded training dataframe. Number of instances: ' + str(len(train_df)))
-    features, bag_labels_per_instance, bag_names_per_instance, _ = load_dataframe(train_df, config)
+    features, bag_labels_per_instance, bag_names_per_instance, instance_labels = load_dataframe(train_df, config)
     bag_features, bag_labels, bag_names = get_bag_level_information(features, bag_labels_per_instance, bag_names_per_instance)
+
+    if config['tsne']['visualize']:
+        visualize_and_save(features=features, instance_labels=instance_labels, config=config)
+
     if vgpmil_model is not None:
         print('Train VGPMIL')
         vgpmil_model.train(features, bag_labels_per_instance, bag_names_per_instance, Z=None, pi=None, mask=None)
@@ -81,6 +86,8 @@ def main():
     vgpmil_model, random_forest_model, svm_model = initialize_models(config)
     train(config, vgpmil_model, random_forest_model, svm_model)
     test(config, vgpmil_model, random_forest_model, svm_model)
+
+
 
 
 if __name__ == "__main__":
