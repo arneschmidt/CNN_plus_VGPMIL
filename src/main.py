@@ -19,7 +19,7 @@ def initialize_models(config):
 
     if config['use_models']['vgpmil'] == True:
         vgpmil_config = config['vgpmil']
-        kernel = RBF()
+        kernel = RBF(lengthscale=vgpmil_config['kernel_length_scale'], variance=vgpmil_config['kernel_variance'])
         vgpmil_model = vgpmil(kernel=kernel,
                                num_inducing=int(vgpmil_config['inducing_points']),
                                max_iter=int(vgpmil_config['iterations']),
@@ -59,8 +59,8 @@ def test(config: Dict, vgpmil_model: vgpmil = None, rf_model: RandomForestClassi
 
     if vgpmil_model is not None:
         print('Test VGPMIL')
-        predictions = vgpmil_model.predict(features)
-        metrics_calculator.calc_metrics(predictions, predictions, 'vgpmil')
+        instance_predictions, bag_predictions = vgpmil_model.predict(features, bag_names_per_instance, bag_names)
+        metrics_calculator.calc_metrics(instance_predictions, bag_predictions, 'vgpmil')
     if rf_model is not None:
         print('Test Random Forest')
         bag_predictions = rf_model.predict(bag_features)

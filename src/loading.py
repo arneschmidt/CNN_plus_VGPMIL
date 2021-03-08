@@ -60,7 +60,6 @@ def load_cnn_predictions(test_df, config):
     else:
         bag_cnn_probability = np.array([])
 
-
     return cnn_prediction, bag_cnn_prediction, bag_cnn_probability
 
 def get_bag_level_information(features: np.array, bag_labels_per_instance: np.array, bag_names_per_instance: np.array,
