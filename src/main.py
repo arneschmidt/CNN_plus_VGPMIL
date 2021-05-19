@@ -1,8 +1,10 @@
 from __future__ import print_function
 import yaml
 import os
+import argparse
 import numpy as np
 import pandas as pd
+import timeit
 from vgpmil.helperfunctions import RBF
 from vgpmil.vgpmil import vgpmil
 from typing import Dict
@@ -64,7 +66,10 @@ def test(config: Dict, vgpmil_model: vgpmil = None, rf_model: RandomForestClassi
 
     if vgpmil_model is not None:
         print('Test VGPMIL')
+        start = timeit.timeit()
         instance_predictions, bag_predictions = vgpmil_model.predict(features, bag_names_per_instance, bag_names)
+        end = timeit.timeit()
+        print('Average runtime per bag: ', str((end - start) / bag_predictions.size))
         metrics_calculator.calc_metrics(instance_predictions, bag_predictions, 'vgpmil')
     if rf_model is not None:
         print('Test Random Forest')
@@ -81,7 +86,11 @@ def test(config: Dict, vgpmil_model: vgpmil = None, rf_model: RandomForestClassi
     metrics_calculator.write_to_file(config)
 
 def main():
-    with open('config.yaml') as file:
+    parser = argparse.ArgumentParser(description="Cancer Classification")
+    parser.add_argument("--config", "-c", type=str, default="./config.yaml",
+                        help="Config path (yaml file expected) to default config.")
+    args = parser.parse_args()
+    with open(args.config) as file:
         config = yaml.full_load(file)
     vgpmil_model, random_forest_model, svm_model = initialize_models(config)
     train(config, vgpmil_model, random_forest_model, svm_model)
