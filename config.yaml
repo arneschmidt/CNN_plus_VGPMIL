@@ -1,16 +1,17 @@
-path_train_df: ./RSNA/input/with_attention_factor/train_8.csv
-path_test_df: ./RSNA/input/with_attention_factor/test_8.csv
+path_train_df: ./RSNA/input/without_attention_factor/CT_feature_train.xls
+path_test_df: ./CQ500/input/without_attention_factor/CQ500_8.csv
+#path_test_df: ./CQ500/input/final/test/CQ500_final_0.csv
 output_path: ./
 
 use_models:
   vgpmil: True
-  random_forest: True
-  svm: True
+  random_forest: False
+  svm: False
   cnn: True
 
 vgpmil:
   inducing_points: 200
-  iterations: 2
+  iterations: 200
   normalize: True
   verbose: False
   kernel_length_scale: 1.5
@@ -25,6 +26,7 @@ col_bag_name: 'bag_name'
 col_bag_cnn_prediction: 'bag_cnn_prediction'
 col_bag_cnn_probability: 'bag_cnn_probability'
 
+
 tsne:
   visualize: False
-  random_seed: 42
+  random_seed: 0
