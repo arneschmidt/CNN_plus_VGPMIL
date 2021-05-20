@@ -1,7 +1,7 @@
 path_train_df: ./RSNA/input/final/train/RSNA_train_2.csv
 #path_test_df: ./RSNA/input/final/test/CT_feature_final_8_0.csv
 path_test_df: ./CQ500/input/final/test/CQ500_final_2.csv
-output_path: ./CQ500/output/final/
+output_path: ./CQ500/output/test/
 
 use_models:
   vgpmil: True
