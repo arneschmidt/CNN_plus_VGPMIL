@@ -10,10 +10,12 @@ def main():
     test_df = pd.read_csv(config['path_test_df'])
     dict = {'Train': train_df, 'Test': test_df}
     for name, df in dict.items():
+        bag_sizes = []
+
         print(name)
+        print('Instance stats:')
+        print('total: ', len(df))
         if config['col_instance_label'] in df:
-            print('Instance stats:')
-            print('total: ', len(df))
             pos_inst = np.sum(df[config['col_instance_label']] == 1)
             print('positive: ', pos_inst)
             print('negative: ', len(df) - pos_inst)
@@ -24,9 +26,16 @@ def main():
         pos_bags = 0
 
         for bag in bags:
-            label = np.unique(df[config['col_bag_label']].loc[df[config['col_bag_name']] == bag])
+            df_bag = df.loc[df[config['col_bag_name']] == bag]
+            label = np.unique(df_bag[config['col_bag_label']])
+            bag_sizes.append(len(df_bag))
             if label == 1:
                 pos_bags = pos_bags + 1
+        bag_sizes = np.array(bag_sizes)
+
+        print('average_bag_size: ', np.mean(bag_sizes))
+        print('min_bag_size: ', np.min(bag_sizes))
+        print('max_bag_size: ', np.max(bag_sizes))
         print('positive: ', pos_bags)
         print('negative: ', bags.size - pos_bags)
         print('\n')

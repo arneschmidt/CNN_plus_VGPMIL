@@ -2,8 +2,8 @@ import glob
 import pandas as pd
 
 
-input_dir = './RSNA/output/final/'
-out_file = './RSNA/output/final/mean.csv'
+input_dir = './CQ500/output/test_sec_dc/'
+out_file = './CQ500/output/test_sec_dc/mean.csv'
 
 files = glob.glob(input_dir + "*.csv")
 
