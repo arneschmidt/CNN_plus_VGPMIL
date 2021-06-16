@@ -1,3 +1,5 @@
+# This script calculates the dataset statistics of the train and test dataframe specified in the ./config.yaml
+
 import yaml
 import pandas as pd
 import numpy as np

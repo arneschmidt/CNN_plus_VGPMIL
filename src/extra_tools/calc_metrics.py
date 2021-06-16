@@ -1,9 +1,15 @@
+# This script calculates the mean metrics of the final vgpmil model for all .csv metric files in one folder
+
 import glob
 import pandas as pd
 
 
-input_dir = './CQ500/output/test_sec_dc/'
-out_file = './CQ500/output/test_sec_dc/mean.csv'
+#
+input_dir = './CQ500/output/final_2/'
+out_file = './CQ500/output/final_2/mean.csv'
+
+# input_dir = './RSNA/output/final/'
+# out_file = './RSNA/output/final/mean.csv'
 
 files = glob.glob(input_dir + "*.csv")
 
