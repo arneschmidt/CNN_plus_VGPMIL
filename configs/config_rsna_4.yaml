@@ -1,5 +1,5 @@
-path_train_df: ./RSNA/input/final/train/RSNA_train_4.csv
-path_test_df: ./RSNA/input/final/test/CT_feature_final_8_4.csv
+path_train_df: ./RSNA/input/final/train/RSNA_added_4.csv
+path_test_df: ./RSNA/input/final/test/RSNA_added_test_4.csv
 #path_test_df: ./CQ500/input/final/test/CQ500_final_0.csv
 output_path: ./RSNA/output/final/
 
@@ -14,7 +14,7 @@ vgpmil:
   iterations: 200
   normalize: True
   verbose: False
-  kernel_length_scale: 1.5
+  kernel_length_scale: 2.0
   kernel_variance: 0.5
 
 # input column naming convention

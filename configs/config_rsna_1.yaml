@@ -14,7 +14,7 @@ vgpmil:
   iterations: 200
   normalize: True
   verbose: False
-  kernel_length_scale: 1.5
+  kernel_length_scale: 2.0
   kernel_variance: 0.5
 
 # input column naming convention
