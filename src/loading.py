@@ -1,6 +1,7 @@
 from typing import Dict
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 
 def load_dataframe(df: pd.DataFrame, config: Dict):
@@ -23,6 +24,10 @@ def load_dataframe(df: pd.DataFrame, config: Dict):
         bag_names_per_instance = np.array([])
 
     features = df[col_features].to_numpy().astype('float32')
+
+    if config['normalize']:
+        scaler=StandardScaler()
+        features = scaler.fit_transform(features)
 
     pi = None
     mask = None

@@ -11,7 +11,7 @@ class Metrics():
         self.instance_labels = instance_labels
         self.bag_names = bag_names
         self.bag_names_per_instance = bag_names_per_instance
-        self.bag_labels = bag_labels
+        self.bag_labels = bag_labels.flatten()
         self.metrics_df = pd.DataFrame()
 
     def calc_metrics(self, instance_predictions: np.array, probabilities: np.array, model_name: str):

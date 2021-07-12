@@ -159,9 +159,10 @@ class vgpmil(object):
         bag_probabilities = np.full(shape = len(bag_names), fill_value=-1.0, dtype=np.float)
         for j in range(len(bag_names)):
             bag_name = bag_names[j]
-            bag_instances_zero_prob = instance_zero_prob[bag_names_per_instance == bag_name]
-            bag_zero_prob = np.prod(bag_instances_zero_prob)
-            bag_probabilities[j] = 1 - bag_zero_prob
+            # bag_instances_zero_prob = instance_zero_prob[bag_names_per_instance == bag_name]
+            # bag_zero_prob = np.prod(bag_instances_zero_prob)
+            # bag_probabilities[j] = 1 - bag_zero_prob
+            bag_probabilities[j] = np.max(instance_ber_probabilities[bag_names_per_instance == bag_name])
 
         assert np.all(bag_probabilities != -1)
 

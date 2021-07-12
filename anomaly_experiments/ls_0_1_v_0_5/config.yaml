@@ -1,0 +1,31 @@
+path_train_df: /home/arne/datasets/UGR16anomaly/formatted_vgpmil/May_MIL.csv
+path_test_df: /home/arne/datasets/UGR16anomaly/formatted_vgpmil/TEST_MIL.csv
+output_path: ./output/
+
+use_models:
+  vgpmil: True
+  random_forest: True
+  svm: True
+  cnn: False
+
+vgpmil:
+  inducing_points: 200
+  iterations: 200
+  normalize: True
+  verbose: False
+  kernel_length_scale: 2.0
+  kernel_variance: 0.5
+
+# input column naming convention
+col_feature_prefix: 'feature'
+col_instance_label: 'instance_label'
+col_cnn_prediction: 'cnn_prediction'
+col_bag_label: 'bag_label'
+col_bag_name: 'bag_name'
+col_bag_cnn_prediction: 'bag_cnn_prediction'
+col_bag_cnn_probability: 'bag_cnn_probability'
+
+
+tsne:
+  visualize: False
+  random_seed: 0

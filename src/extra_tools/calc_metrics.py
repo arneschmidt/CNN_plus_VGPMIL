@@ -5,8 +5,8 @@ import pandas as pd
 
 
 #
-input_dir = './CQ500/output/final_2/'
-out_file = './CQ500/output/final_2/mean.csv'
+input_dir = './RSNA/output/without_attention_layer_final/'
+out_file = './RSNA/output/without_attention_layer_final/mean.csv'
 
 # input_dir = './RSNA/output/final/'
 # out_file = './RSNA/output/final/mean.csv'
