@@ -1,5 +1,5 @@
-path_train_df: ./RSNA/input/without_attention_layer_final/noMIL_train0.csv
-path_test_df: ./RSNA/input/without_attention_layer_final/noMIL_test0.csv
+path_train_df: ./RSNA/input/without_attention_layer_final/noMIL_train4.csv
+path_test_df: ./RSNA/input/without_attention_layer_final/noMIL_test4.csv
 #path_test_df: ./CQ500/input/final/test/CQ500_final_0.csv
 output_path: ./RSNA/output/without_attention_layer_final/
 

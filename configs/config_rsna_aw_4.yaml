@@ -1,5 +1,5 @@
-path_train_df: ./RSNA/input/with_attention_factor_final/New_training_0.csv
-path_test_df: ./RSNA/input/with_attention_factor_final/New_testing_0.csv
+path_train_df: ./RSNA/input/with_attention_factor_final/New_training_4.csv
+path_test_df: ./RSNA/input/with_attention_factor_final/New_testing_4.csv
 #path_test_df: ./CQ500/input/final/test/CQ500_final_0.csv
 output_path: ./RSNA/output/with_attention_factor_final/
 
