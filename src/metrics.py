@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.metrics import confusion_matrix, f1_score, cohen_kappa_score, accuracy_score, recall_score, \
-    precision_score, roc_auc_score
+    precision_score, roc_auc_score, precision_recall_curve, auc
 from scipy import stats
 
 
@@ -69,12 +69,15 @@ class Metrics():
         bag_accuracy = accuracy_score(bag_gt, bag_predictions)
         bag_f1_score = f1_score(bag_gt, bag_predictions)
         bag_cohens_kappa = cohen_kappa_score(bag_gt, bag_predictions)
+        precision, recall, thresholds = precision_recall_curve(bag_gt, bag_predictions)
+        bag_pr_auc = auc(recall, precision)
 
         self.metrics_df.loc['bag_recall', model_name] = round(bag_recall, 3)
         self.metrics_df.loc['bag_precision', model_name] = round(bag_precision, 3)
         self.metrics_df.loc['bag_accuracy', model_name] = round(bag_accuracy, 3)
         self.metrics_df.loc['bag_f1_score', model_name] = round(bag_f1_score, 3)
         self.metrics_df.loc['bag_cohens_kappa', model_name] = round(bag_cohens_kappa, 3)
+        self.metrics_df.loc['bag_pr_auc', model_name] = round(bag_pr_auc, 3)
         self.metrics_df.loc['roc_auc', model_name] = round(roc_auc_score(bag_gt, bag_probabilities), 3)
 
 

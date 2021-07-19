@@ -16,7 +16,11 @@ def load_dataframe(df: pd.DataFrame, config: Dict):
     for col in df.columns:
         if col_feature_prefix in col:
             col_features.append(col)
-    bag_names_per_instance = df[col_bag_name].to_numpy().astype('str')
+
+    if col_bag_name in df.columns:
+        bag_names_per_instance = df[col_bag_name].to_numpy().astype('str')
+    else:
+        bag_names_per_instance = np.array([])
 
     features = df[col_features].to_numpy().astype('float32')
 

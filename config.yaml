@@ -1,19 +1,19 @@
-path_train_df: ./RSNA/input/with_attention_factor/train_8.csv
-path_test_df: ./RSNA/input/with_attention_factor/test_8.csv
-output_path: ./
+path_train_df: ./RSNA/input/final/train/RSNA_added_4.csv
+path_test_df: ./CQ500/input/final_2/CQ_added_4.csv
+output_path: ./RSNA/output/final/
 
 use_models:
   vgpmil: True
-  random_forest: True
-  svm: True
+  random_forest: False
+  svm: False
   cnn: True
 
 vgpmil:
   inducing_points: 200
-  iterations: 2
+  iterations: 200
   normalize: True
   verbose: False
-  kernel_length_scale: 1.5
+  kernel_length_scale: 2.0
   kernel_variance: 0.5
 
 # input column naming convention
@@ -25,6 +25,7 @@ col_bag_name: 'bag_name'
 col_bag_cnn_prediction: 'bag_cnn_prediction'
 col_bag_cnn_probability: 'bag_cnn_probability'
 
+
 tsne:
   visualize: False
-  random_seed: 42
+  random_seed: 0
